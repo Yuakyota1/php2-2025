@@ -2,15 +2,16 @@
 require_once "model/CategoryModel.php";  // Thêm dòng này
 require_once "model/ProductModel.php";
 require_once "model/ImageModel.php";
-
+require_once "model/bannerModel.php";
 class ProductController {
     private $productModel;
+    private $bannerModel;
     private $imageModel;
     private $categoryModel; // Khai báo categoryModel
 
     public function __construct() {
         $this->productModel = new ProductModel();
-
+        $this->bannerModel = new BannerModel(); // Khởi tạo BannerModel
         $this->categoryModel = new CategoryModel(); // Khởi tạo CategoryModel
         
         
@@ -64,13 +65,14 @@ class ProductController {
         }
     
         $categories = $this->categoryModel->getAllCategories();
+        $banners = $this->bannerModel->getAllBanners(); // Lấy danh sách banner từ DB
     
         foreach ($products as &$product) {
             $product['images'] = $this->productModel->getImagesByProductId($product['idProduct']);
             $product['sizeColors'] = $this->productModel->getSizeColorsByProductId($product['idProduct']);
         }
     
-        renderView("view/home.php", compact('products', 'categories', 'categoryId'), "Product List");
+        renderView("view/home.php", compact('products', 'categories', 'categoryId', 'banners'), "Product List");
     }
     
     

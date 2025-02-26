@@ -10,8 +10,20 @@ require_once "middleware.php";
 require_once "router/Router.php";
 require_once "controller/CartController.php";
 require_once "controller/ReportController.php";
+require_once "controller/CouponController.php";
+require_once "controller/BannerController.php";
 
 session_start();
+// Route cho admin dashboard
+$file = realpath(__DIR__ . '/view/admin/admin_dashboard.php');
+
+if ($file && file_exists($file)) {
+    include $file;
+} else {
+    die("⚠ Lỗi: Không tìm thấy file admin_dashboard.php! Kiểm tra đường dẫn: " . $file);
+}
+
+
 
 $router = new Router();
 $productController = new ProductController();
@@ -23,8 +35,22 @@ $size = new SizeController();
 $image = new ImageController();
 $cart = new CartController();
 $Report = new ReportController();
+$coupon = new CouponController();
+$banner = new BannerController();
 
 $router->addRoute("/vnpay_return", [$cart, "vnpayReturn"]);
+
+$router->addRoute("/admin/coupons", [$coupon, "index"]);
+$router->addRoute("/admin/coupons/create", [$coupon, "create"]);
+$router->addRoute("/admin/coupons/edit/{id}", [$coupon, "edit"]);
+$router->addRoute("/admin/coupons/{id}", [$coupon, "show"]);
+$router->addRoute("/admin/coupons/delete/{id}", [$coupon, "delete"]);
+
+$router->addRoute("/admin/banners", [$banner, "index"]);
+$router->addRoute("/admin/banners/create", [$banner, "create"]);
+$router->addRoute("/admin/banners/edit/{id}", [$banner, "edit"]);
+$router->addRoute("/admin/banners/{id}", [$banner, "show"]);
+$router->addRoute("/admin/banners/delete/{id}", [$banner, "delete"]);
 
 $router->addRoute("/home", [$productController, "list"]);
 $router->addRoute("/shop", [$productController, "shop"]);

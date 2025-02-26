@@ -158,7 +158,66 @@
         overflow: hidden;
         text-overflow: ellipsis;
     }
+    .banner-slider {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.banner-slider .swiper-slide {
+    text-align: center;
+}
+
+.banner-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+
 </style>
+<!-- Swiper.js -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        new Swiper(".banner-slider", {
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+    });
+</script>
+
+<!-- Banner Slider -->
+<?php if (!empty($banners)) : ?>
+    <div class="swiper banner-slider">
+        <div class="swiper-wrapper">
+            <?php foreach ($banners as $banner) : ?>
+                <div class="swiper-slide">
+                    <img src="/uploads/banners/<?= htmlspecialchars($banner['image']) ?>" alt="Banner" class="banner-image">
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <!-- Nút điều hướng -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+    </div>
+<?php endif; ?>
+
 
 <!-- Hiển thị danh mục -->
 <h2 class="section-title">Danh Mục Sản Phẩm</h2>
